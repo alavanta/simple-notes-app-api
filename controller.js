@@ -26,11 +26,11 @@ exports.getNotes = function (req, res) {
 }
 
 
-exports.getNotesByTitle = function (req, res) {
-    let title = "%" + req.params.title + "%";
+exports.getNotesById = function (req, res) {
+    let id =req.params.title ;
 
     conn.query(
-        `select title,note,category.name 'category' from notes  inner join category  on category.id = notes.category where notes.title like ?;`, [title],
+        `select title,note,category.name 'category' from notes  inner join category  on category.id = notes.category where notes.id=?;`, [id],
         function (error, rows, field) {
             if (error) {
                 throw error
