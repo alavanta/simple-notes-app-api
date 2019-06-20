@@ -4,40 +4,9 @@ const response = require('./response');
 const conn = require('./connect.js');
 
 exports.getNotes = function (req, res) {
-    let page=req.query.page;
-    let limit=req.query.limit;
-    let title="%"+req.query.title+"%" ;
-    if(title=="%undefined%"){
-        title="%%";
-    }
-    let sort= req.query.sort;
-    
-    console.log("page : "+page+" title : "+title);
-    let parameter=page*10;
-    if(page || limit){
-        
-        conn.query(
-            `select title,note,category.name 'category' from notes  inner join category  on category.id = notes.category where title like ? order by time asc limit ?,? ;`,[title,parameter-10,parameter],
-            function (error, rows, field) {
-                if (error) {
-                    throw error
-                } else {
-                    if (rows.length == 0) {
-                        return res.send({
-                            message: "no record found"
-                        })
-                    } else {
-                        return res.send({
-                            data: rows,
-                        })
-                    }
-                }
-            }
-        )
-    }
-    else{
+
     conn.query(
-        `select title, note, c.name 'category'  from notes n inner join category c on c.id = n.category;`,
+        `select title, note, category.name 'category'  from notes  inner join category  on category.id = notes.category;`,
         function (error, rows, field) {
             if (error) {
                 throw error
@@ -53,7 +22,7 @@ exports.getNotes = function (req, res) {
                 }
             }
         }
-    )}
+    )
 }
 
 
